@@ -8,6 +8,7 @@ import type { MenuItem } from "primevue/menuitem";
 import AppThemeSwicther from "./AppThemeSwicther.vue";
 import AppLogo from "./AppLogo.vue";
 import Logout from "./auth/Logout.vue";
+import Container from "./ui/Container.vue";
 const router = useRouter();
 const route = useRoute();
 
@@ -25,14 +26,16 @@ const items = computed<MenuItem[]>(() =>
 </script>
 
 <template>
-  <Menubar :model="items">
-    <template #end>
-      <div class="flex items-center gap-2">
-        <AppThemeSwicther />
-        <Logout />
-      </div>
-    </template>
-  </Menubar>
+  <Container as="nav" class="flex items-center gap-2">
+    <Menubar :model="items" class="bg-transparent! w-full border-0! px-0!">
+      <template #end>
+        <div class="flex items-center gap-2">
+          <AppThemeSwicther />
+          <Logout />
+        </div>
+      </template>
+    </Menubar>
+  </Container>
 </template>
 
 <style scoped>

@@ -31,7 +31,7 @@ async function handleLogout() {
     :loading
     size="small"
     severity="secondary"
-    v-tooltip.bottom="'Wyloguj'"
+    v-tooltip.bottom="'Logout'"
     @click="handleLogout"
   />
 </template>

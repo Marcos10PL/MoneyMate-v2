@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FormField from "@primevue/forms/formfield";
+import { Password } from "primevue";
 import InputText from "primevue/inputtext";
 import Message from "primevue/message";
 

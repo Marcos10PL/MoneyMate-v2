@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import Accounts from "@/components/settings/Accounts.vue";
+</script>
+
 <template>
-  <div>SETTINGS</div>
+  <div>
+    <Accounts />
+  </div>
 </template>

@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { ProgressSpinner } from "primevue";
+</script>
+
 <template>
-  <i class="pi pi-spinner pi-spin text-5xl! text-primary" />
+  <ProgressSpinner
+    style="width: 50px; height: 50px"
+    strokeWidth="8"
+    fill="transparent"
+    animationDuration=".5s"
+  />
 </template>
+
+<style>
+.p-progressspinner-circle {
+  stroke: var(--color-primary) !important;
+}
+</style>

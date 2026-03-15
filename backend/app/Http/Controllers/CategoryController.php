@@ -17,14 +17,16 @@ class CategoryController extends Controller
   public function index(Request $request)
   {
     $userId = $request->user()->id;
-    $perPage = request()->get('per_page', 10);
 
     $categories = Category::where(function ($query) use ($userId) {
       $query->whereNull('user_id')
         ->orWhere('user_id', $userId);
-    })->paginate($perPage);
+    })->get();
 
-    return new CategoryCollection($categories);
+    return response()->json([
+      'message' => 'Categories retrieved successfully',
+      'categories' => $categories->map(fn($c) => CategoryResource::make($c)),
+    ]);
   }
 
   /**

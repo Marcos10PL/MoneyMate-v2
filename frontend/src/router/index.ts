@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/user";
+import { useAccountsStore } from "@/store/accounts";
+import { useCategoriesStore } from "@/store/categories";
+import { useInitStore } from "@/store/init"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,11 +68,28 @@ const router = createRouter({
 });
 
 router.beforeEach(async to => {
+  const init = useInitStore();
+
   const userStore = useUserStore();
+  const accountsStore = useAccountsStore();
+  const categoriesStore = useCategoriesStore();
 
   if (!userStore.isSessionInitialized) {
     await userStore.initSession();
   }
+
+  if (
+    userStore.isAuthenticated() &&
+    !accountsStore.isInitialLoaded &&
+    !categoriesStore.isInitialLoaded
+  ) {
+    await Promise.all([
+      accountsStore.fetchAccounts(),
+      categoriesStore.fetchCategories(),
+    ]);
+  }
+
+  init.loading = false;
 
   const requiresAuth = Boolean(to.meta.requiresAuth);
   const guestOnly = Boolean(to.meta.guestOnly);
