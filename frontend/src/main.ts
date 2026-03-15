@@ -6,6 +6,7 @@ import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
 import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
+import { createPinia } from "pinia";
 import "primeicons/primeicons.css";
 
 import "./assets/main.css";
@@ -29,6 +30,7 @@ const AppThemePreset = definePreset(Aura, {
 });
 
 const app = createApp(App);
+const pinia = createPinia();
 
 app.use(PrimeVue, {
   theme: {
@@ -42,6 +44,7 @@ app.use(PrimeVue, {
 app.directive("tooltip", Tooltip);
 app.use(ToastService);
 
+app.use(pinia);
 app.use(router);
 
 app.mount("#app");

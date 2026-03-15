@@ -1,53 +1,66 @@
+import { toApiError } from "./errors";
+import type {
+  AuthUser,
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  RegisterResponse,
+} from "@/types";
+import { api, APP_BASE_URL } from "./conn";
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
-const APP_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, "");
-
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  withCredentials: true,
-});
-
-export type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-export type AuthUser = {
-  id: number;
-  name: string;
-  email: string;
-  role?: string;
-};
-
-export type LoginResponse = {
-  message: string;
-  user: AuthUser;
-};
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.xsrfCookieName = "XSRF-TOKEN";
+axios.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
 
 export async function getCsrfCookie() {
-  await axios.get(`${APP_BASE_URL}/sanctum/csrf-cookie`, {
-    withCredentials: true,
-  });
+  try {
+    await axios.get(`${APP_BASE_URL}/sanctum/csrf-cookie`, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    throw toApiError(error, "Unable to initialize CSRF protection");
+  }
 }
 
 export async function login(payload: LoginPayload) {
-  await getCsrfCookie();
-  const { data } = await api.post<LoginResponse>("/auth/login", payload);
-  return data;
+  try {
+    await getCsrfCookie();
+    const { data } = await api.post<LoginResponse>("/auth/login", payload);
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Login failed");
+  }
+}
+
+export async function register(payload: RegisterPayload) {
+  try {
+    await getCsrfCookie();
+    const { data } = await api.post<RegisterResponse>(
+      "/auth/register",
+      payload,
+    );
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Registration failed");
+  }
 }
 
 export async function logout() {
-  const { data } = await api.post<{ message: string }>("/auth/logout");
-  return data;
+  try {
+    const { data } = await api.post("/auth/logout");
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Logout failed");
+  }
 }
 
 export async function getCurrentUser() {
-  const { data } = await api.get<AuthUser>("/user");
-  return data;
+  try {
+    const { data } = await api.get<AuthUser>("/user");
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to fetch current user");
+  }
 }
