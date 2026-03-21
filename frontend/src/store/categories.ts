@@ -2,19 +2,29 @@ import {
   getCategories,
   deleteCategory as deleteCat,
   createCategory as createCat,
+  updateCategory as updateCat,
 } from "@/services/api";
-import type { AccountPayload, Category } from "@/types";
+import type { Category, CategoryPayload } from "@/types";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useAsyncRequest } from "@/composables/useAsyncRequest";
 
 export const useCategoriesStore = defineStore("categories", () => {
   const categories = ref<Category[]>([]);
   const isInitialLoaded = ref(false);
 
+  const globalCategories = computed(() =>
+    categories.value.filter(cat => cat.is_global),
+  );
+
+  const userCategories = computed(() =>
+    categories.value.filter(cat => !cat.is_global),
+  );
+
   const fetchReq = useAsyncRequest();
   const deleteReq = useAsyncRequest();
   const createReq = useAsyncRequest();
+  const updateReq = useAsyncRequest();
 
   async function fetchCategories(force = false) {
     await fetchReq.run(
@@ -36,16 +46,34 @@ export const useCategoriesStore = defineStore("categories", () => {
     });
   }
 
-  async function createCategory(payload: AccountPayload) {
+  async function updateCategory(id: number, payload: CategoryPayload) {
+    await updateReq.run(async () => {
+      const updatedCategory = await updateCat(id, payload);
+      categories.value = categories.value.map(cat =>
+        cat.id === id ? { ...cat, ...updatedCategory.category } : cat,
+      );
+    });
+  }
+
+  async function createCategory(payload: CategoryPayload) {
     await createReq.run(async () => {
       const newCategory = await createCat(payload);
       categories.value.push(newCategory.category);
     });
   }
 
+  const clearCategories = () => {
+    categories.value = [];
+    isInitialLoaded.value = false;
+  };
+
   return {
     categories,
     isInitialLoaded,
+    clearCategories,
+
+    globalCategories,
+    userCategories,
 
     fetchCategories,
     isFetching: fetchReq.isLoading,
@@ -58,5 +86,9 @@ export const useCategoriesStore = defineStore("categories", () => {
     createCategory,
     isCreating: createReq.isLoading,
     createError: createReq.error,
+
+    updateCategory,
+    isUpdating: updateReq.isLoading,
+    updateError: updateReq.error,
   };
 });

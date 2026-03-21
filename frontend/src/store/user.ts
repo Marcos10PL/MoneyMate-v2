@@ -1,13 +1,16 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getCurrentUser } from "@/services/api";
+import { deleteUser, getCurrentUser } from "@/services/api";
 import type { AuthUser } from "@/types";
+import { useAsyncRequest } from "@/composables/useAsyncRequest";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref<AuthUser | null>(null);
 
   const isSessionInitialized = ref(false);
   const isSessionLoading = ref(false);
+
+  const deleteUserReq = useAsyncRequest();
 
   const setUser = (userData: AuthUser | null) => {
     user.value = userData;
@@ -17,8 +20,8 @@ export const useUserStore = defineStore("user", () => {
     user.value = null;
   };
 
-  const initSession = async () => {
-    if (isSessionInitialized.value || isSessionLoading.value) {
+  const initSession = async (force = false) => {
+    if (!force && (isSessionInitialized.value || isSessionLoading.value)) {
       return;
     }
 
@@ -37,6 +40,16 @@ export const useUserStore = defineStore("user", () => {
 
   const isAuthenticated = () => Boolean(user.value);
 
+  const deleteAccount = async () => {
+    await deleteUserReq.run(
+      async () => {
+        await deleteUser();
+      },
+      true,
+      () => clearUser(),
+    );
+  };
+
   return {
     user,
     isSessionInitialized,
@@ -45,5 +58,9 @@ export const useUserStore = defineStore("user", () => {
     clearUser,
     initSession,
     isAuthenticated,
+
+    deleteAccount,
+    deleteAccountLoading: deleteUserReq.isLoading,
+    deleteAccountError: deleteUserReq.error,
   };
 });

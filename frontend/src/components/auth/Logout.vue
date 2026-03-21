@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { GUEST_LINKS } from "@/const";
 import { logout } from "@/services/api";
+import { useAccountsStore } from "@/store/accounts";
+import { useCategoriesStore } from "@/store/categories";
 import { useUserStore } from "@/store/user";
 import { Button } from "primevue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
+const accountsStore = useAccountsStore();
+const categoriesStore = useCategoriesStore();
+
 const router = useRouter();
 
 const loading = ref(false);
@@ -18,7 +23,11 @@ async function handleLogout() {
     await logout();
   } finally {
     userStore.clearUser();
+    accountsStore.clearAccounts();
+    categoriesStore.clearCategories();
+
     router.push(GUEST_LINKS.SIGN_IN);
+    
     loading.value = false;
   }
 }

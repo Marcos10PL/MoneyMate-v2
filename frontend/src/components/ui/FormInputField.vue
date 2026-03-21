@@ -9,6 +9,7 @@ const { type = "text", size = "small" } = defineProps<{
   type?: "text" | "email" | "password";
   placeholder?: string;
   size?: "small" | "large";
+  disabled?: boolean;
 }>();
 </script>
 
@@ -19,6 +20,7 @@ const { type = "text", size = "small" } = defineProps<{
       :size="size"
       :placeholder="placeholder"
       v-bind="$field.props"
+      :disabled="disabled"
     />
     <Message
       v-if="$field?.invalid"

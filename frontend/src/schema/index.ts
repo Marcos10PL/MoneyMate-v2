@@ -13,6 +13,8 @@ const registerPasswordSchema = z
     "Password must contain at least one special character",
   );
 
+  
+
 const emailSchema = z.email("Invalid email address");
 
 export const loginSchema = z.object({
@@ -34,3 +36,18 @@ export const registerSchema = z
     message: "Passwords do not match",
     path: ["password_confirmation"],
   });
+
+export const accountSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Account name must be at least 2 characters long")
+    .max(40, "Account name must be less than 40 characters long"),
+});
+
+export const categorySchema = z.object({
+  name: z
+    .string()
+    .min(2, "Category name must be at least 2 characters long")
+    .max(40, "Category name must be less than 40 characters long"),
+  is_global: z.boolean().optional(),
+});

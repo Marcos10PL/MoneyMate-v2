@@ -59,9 +59,15 @@ export const useAccountsStore = defineStore("accounts", () => {
     });
   }
 
+  const clearAccounts = () => {
+    accounts.value = [];
+    isInitialLoaded.value = false;
+  };
+
   return {
     accounts,
     isInitialLoaded,
+    clearAccounts,
 
     fetchAccounts,
     isFetching: fetchReq.isLoading,

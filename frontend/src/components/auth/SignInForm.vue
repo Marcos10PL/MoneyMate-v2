@@ -35,6 +35,7 @@ const onFormSubmit = async ({ valid, values }: FormSubmitEvent) => {
   }
 
   isSubmitting.value = true;
+  userStore.clearUser();
 
   try {
     const response = await login(values as Schema);
@@ -69,7 +70,7 @@ const onFormSubmit = async ({ valid, values }: FormSubmitEvent) => {
 </script>
 
 <template>
-  <div class="card flex flex-col items-center gap-5">
+  <div class="flex flex-col items-center gap-5">
     <Form
       :initialValues
       :resolver="resolver"

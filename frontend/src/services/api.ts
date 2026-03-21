@@ -73,6 +73,15 @@ export async function getCurrentUser() {
   }
 }
 
+export async function deleteUser() {
+  try {
+    const { data } = await api.delete("/auth/delete");
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to delete user");
+  }
+}
+
 // -------- ACCOUNTS --------
 export async function getAccounts() {
   try {
@@ -120,9 +129,8 @@ export async function deleteAccount(id: number) {
 // -------- CATEGORIES --------
 export async function getCategories() {
   try {
-    const { data } = await api.get<ApiResponse<Category[], "categories">>(
-      "/categories",
-    );
+    const { data } =
+      await api.get<ApiResponse<Category[], "categories">>("/categories");
     return data;
   } catch (error) {
     throw toApiError(error, "Unable to fetch categories");
@@ -138,6 +146,18 @@ export async function createCategory(payload: CategoryPayload) {
     return data;
   } catch (error) {
     throw toApiError(error, "Unable to create category");
+  }
+}
+
+export async function updateCategory(id: number, payload: CategoryPayload) {
+  try {
+    const { data } = await api.put<ApiResponse<Category, "category">>(
+      `/categories/${id}`,
+      payload,
+    );
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to update category");
   }
 }
 

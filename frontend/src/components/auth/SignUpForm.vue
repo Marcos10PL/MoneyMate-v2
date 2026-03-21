@@ -38,18 +38,27 @@ const onFormSubmit = async ({ valid, values }: FormSubmitEvent) => {
   isSubmitting.value = true;
 
   try {
-    const response = await register(values as Schema);
-    userStore.setUser(response.user);
+    await register(values as Schema);
+    await userStore.initSession(true);
+
+    if (userStore.isAuthenticated()) {
+      toast.add({
+        severity: "success",
+        summary: "Registration successful",
+      });
+
+      await router.push(APP_LINKS.DASHBOARD);
+      return;
+    }
 
     toast.add({
       severity: "success",
-      summary: "Registration successful. You are now logged in.",
+      summary: "Registration successful. Please log in.",
     });
 
-    await router.push(APP_LINKS.DASHBOARD);
+    await router.push(GUEST_LINKS.SIGN_IN);
   } catch (error) {
-    const code =
-      error instanceof ApiError ? error.status : 500;
+    const code = error instanceof ApiError ? error.status : 500;
 
     if (code === 422) {
       toast.add({
@@ -71,7 +80,7 @@ const onFormSubmit = async ({ valid, values }: FormSubmitEvent) => {
 </script>
 
 <template>
-  <div class="card flex flex-col items-center gap-5">
+  <div class="flex flex-col items-center gap-5">
     <Form
       :initialValues
       :resolver="resolver"

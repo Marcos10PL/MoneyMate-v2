@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { AccountSummary } from "@/types";
+import { Button } from "primevue";
+import ActionButtons from "./ActionButtons.vue";
+import CardLayout from "./CardLayout.vue";
 
 defineProps<{
   account: AccountSummary;
@@ -7,10 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div
-    class="border border-gray-500 rounded-lg py-1 px-3 flex gap-x-6 gap-y-2 flex-wrap justify-between"
-  >
-    <h3 class="font-semibold">{{ account.name }}</h3>
+  <CardLayout :title="account.name">
     <div class="flex items-center gap-4">
       <p class="text-sm font-medium text-primary">
         <i class="pi pi-wallet mr-1 text-sm!" />
@@ -24,6 +24,10 @@ defineProps<{
         <i class="pi pi-arrow-down mr-1 text-sm!" />
         {{ account.expense_sum }}
       </p>
+
+      <div class="w-[1px] min-h-8 -mr-1.5 bg-gray-500"></div>
+
+      <ActionButtons @edit="$emit('edit')" @delete="$emit('delete')" />
     </div>
-  </div>
+  </CardLayout>
 </template>

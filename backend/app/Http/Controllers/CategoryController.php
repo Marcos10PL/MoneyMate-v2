@@ -64,6 +64,43 @@ class CategoryController extends Controller
   }
 
   /**
+   * Update the specified resource in storage.
+   * Only the owner can update their own category.
+   */
+  public function update(Request $request, string $id)
+  {
+    $userId = $request->user()->id;
+
+    $category = Category::where('id', $id)
+      ->where('user_id', $userId)
+      ->first();
+
+    if (!$category) {
+      return response()->json([
+        'message' => 'Category not found or you do not have permission to update it',
+      ], 404);
+    }
+
+    $request->validate([
+      'name' => [
+        'required',
+        'string',
+        'max:40',
+        Rule::unique('categories')->where(fn($query) => $query->where('user_id', $userId))->ignore($category->id),
+      ],
+    ]);
+
+    $category->update([
+      'name' => $request->input('name'),
+    ]);
+
+    return response()->json([
+      'message' => 'Category updated successfully',
+      'category' => CategoryResource::make($category),
+    ]);
+  }
+
+  /**
    * Remove the specified resource from storage.
    * Only the owner can delete their own category.
    * Cannot delete if any transactions are assigned to it.

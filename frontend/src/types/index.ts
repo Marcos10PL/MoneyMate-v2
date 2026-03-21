@@ -16,6 +16,7 @@ export type AccountPayload = {
   name: string;
 };
 
+
 export type CategoryPayload = {
   name: string;
   is_global?: boolean;
