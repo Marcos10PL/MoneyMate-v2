@@ -17,3 +17,8 @@ export const APP_LINKS_ICONS: Record<keyof typeof APP_LINKS, string> = {
   PROFILE: "pi pi-user",
   SETTINGS: "pi pi-cog",
 } as const;
+
+export const SETTINGS_TABS = {
+  CATEGORIES: { label: "Categories", value: "categories" },
+  ACCOUNTS: { label: "Accounts", value: "accounts" },
+} as const;

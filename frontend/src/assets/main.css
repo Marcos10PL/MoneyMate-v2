@@ -5,6 +5,8 @@
   --color-primary: #eab308;
 }
 
+@variant dark (&:where(.my-app-dark, .my-app-dark *));
+
 html,
 body,
 #app {

@@ -9,6 +9,10 @@ import type {
   CategoryPayload,
   LoginPayload,
   RegisterPayload,
+  Transaction,
+  TransactionPayload,
+  TransactionQueryParams,
+  TransactionsListResponse,
 } from "@/types";
 import { api, APP_BASE_URL } from "./conn";
 import axios from "axios";
@@ -167,5 +171,83 @@ export async function deleteCategory(id: number) {
     return data;
   } catch (error) {
     throw toApiError(error, "Unable to delete category");
+  }
+}
+
+// -------- TRANSACTIONS --------
+
+function toTransactionQueryParams(params?: TransactionQueryParams) {
+  if (!params) {
+    return undefined;
+  }
+
+  return {
+    category_id: params.categoryId,
+    type_id: params.typeId,
+    account_id: params.accountId,
+    start_date: params.startDate,
+    end_date: params.endDate,
+    search: params.search,
+    sort_by: params.sortBy,
+    page: params.page,
+    per_page: params.perPage,
+  };
+}
+
+export async function getTransactions(params?: TransactionQueryParams) {
+  try {
+    const { data } = await api.get<TransactionsListResponse>("/transactions", {
+      params: toTransactionQueryParams(params),
+    });
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to fetch transactions");
+  }
+}
+
+export async function getTransaction(id: number) {
+  try {
+    const { data } = await api.get<ApiResponse<Transaction, "data">>(
+      `/transactions/${id}`,
+    );
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to fetch transaction");
+  }
+}
+
+export async function createTransaction(payload: TransactionPayload) {
+  try {
+    const { data } = await api.post<ApiResponse<Transaction, "transaction">>(
+      "/transactions",
+      payload,
+    );
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to create transaction");
+  }
+}
+
+export async function updateTransaction(
+  id: number,
+  payload: TransactionPayload,
+) {
+  try {
+    const { data } = await api.put<ApiResponse<Transaction, "transaction">>(
+      `/transactions/${id}`,
+      payload,
+    );
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to update transaction");
+  }
+}
+
+export async function deleteTransaction(id: number) {
+  try {
+    const { data } = await api.delete<ApiResponse>(`/transactions/${id}`);
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to delete transaction");
   }
 }

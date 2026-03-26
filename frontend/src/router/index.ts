@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { useAccountsStore } from "@/store/accounts";
 import { useCategoriesStore } from "@/store/categories";
-import { useInitStore } from "@/store/init"
+import { useInitStore } from "@/store/init";
+import { SETTINGS_TABS } from "@/const";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +54,24 @@ const router = createRouter({
           component: () => import("../views/TransactionsView.vue"),
         },
         {
+          beforeEnter: (to, from, next) => {
+            const params = new URLSearchParams(
+              to.query as Record<string, string>,
+            );
+            const tab = params.get("tab");
+
+            if (
+              tab === SETTINGS_TABS.ACCOUNTS.value ||
+              tab === SETTINGS_TABS.CATEGORIES.value
+            ) {
+              next();
+            } else {
+              next({
+                name: "settings",
+                query: { tab: SETTINGS_TABS.CATEGORIES.value },
+              });
+            }
+          },
           path: "settings",
           name: "settings",
           component: () => import("../views/SettingsView.vue"),

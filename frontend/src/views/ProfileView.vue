@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import ProfileForm from '@/components/auth/ProfileForm.vue'
-
+import ProfileForm from "@/components/auth/ProfileForm.vue";
 </script>
 
 <template>
-  <div>
-    <ProfileForm />
-  </div>
+  <ProfileForm />
 </template>

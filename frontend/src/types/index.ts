@@ -16,15 +16,35 @@ export type AccountPayload = {
   name: string;
 };
 
-
 export type CategoryPayload = {
   name: string;
   is_global?: boolean;
 };
 
+export type TransactionPayload = {
+  name: string;
+  amount: number;
+  type_id: number;
+  category_id: number;
+  account_id?: number | null;
+  date?: string;
+};
+
 // ------ PARAMS TYPES --------
 
 export type PaginationParams = {
+  page?: number;
+  perPage?: number;
+};
+
+export type TransactionQueryParams = {
+  categoryId?: number;
+  typeId?: number;
+  accountId?: number;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  sortBy?: "asc" | "desc";
   page?: number;
   perPage?: number;
 };
@@ -55,6 +75,36 @@ export type Category = {
   id: number;
   name: string;
   is_global: boolean;
+};
+
+export type Transaction = {
+  id: number;
+  name: string;
+  amount: string;
+  type: string;
+  category: string;
+  account: string | null;
+  account_id: number | null;
+  date: string;
+};
+
+export type TransactionsData = {
+  transactions: Transaction[];
+  income_sum: number;
+  expense_sum: number;
+  balance: number;
+};
+
+export type PaginationMeta = {
+  current_page: number;
+  per_page: number;
+  last_page: number;
+  total: number;
+};
+
+export type TransactionsListResponse = {
+  data: TransactionsData;
+  meta: PaginationMeta;
 };
 
 // ------- API RESPONSE TYPES --------

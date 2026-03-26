@@ -4,13 +4,15 @@ import { Button } from "primevue";
 import ActionButtons from "./ActionButtons.vue";
 import CardLayout from "./CardLayout.vue";
 
-defineProps<{
+const { showActions = true, dropIcon = false } = defineProps<{
   account: AccountSummary;
+  showActions?: boolean;
+  dropIcon?: boolean;
 }>();
 </script>
 
 <template>
-  <CardLayout :title="account.name">
+  <CardLayout :title="account.name" :dropIcon>
     <div class="flex items-center gap-4">
       <p class="text-sm font-medium text-primary">
         <i class="pi pi-wallet mr-1 text-sm!" />
@@ -25,9 +27,11 @@ defineProps<{
         {{ account.expense_sum }}
       </p>
 
-      <div class="w-[1px] min-h-8 -mr-1.5 bg-gray-500"></div>
+      <template v-if="showActions">
+        <div class="w-[1px] min-h-8 -mr-1.5 bg-gray-500"></div>
 
-      <ActionButtons @edit="$emit('edit')" @delete="$emit('delete')" />
+        <ActionButtons @edit="$emit('edit')" @delete="$emit('delete')" />
+      </template>
     </div>
   </CardLayout>
 </template>

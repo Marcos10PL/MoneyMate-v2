@@ -54,6 +54,10 @@ class TransactionController extends Controller
       $transactionsQuery->where('type_id', $request->input('type_id'));
     }
 
+    if ($request->has('account_id')) {
+      $transactionsQuery->where('account_id', $request->input('account_id'));
+    }
+
     $income = (float) $user->transactions()
       ->whereHas('type', fn($q) => $q
         ->where('name', 'income'))

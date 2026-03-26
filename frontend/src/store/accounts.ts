@@ -18,6 +18,8 @@ export const useAccountsStore = defineStore("accounts", () => {
   const updateReq = useAsyncRequest();
   const createReq = useAsyncRequest();
 
+  const selectedAccount = ref<AccountSummary | null>(null);
+
   async function fetchAccounts(force = false) {
     await fetchReq.run(
       async () => {
@@ -62,6 +64,7 @@ export const useAccountsStore = defineStore("accounts", () => {
   const clearAccounts = () => {
     accounts.value = [];
     isInitialLoaded.value = false;
+    selectedAccount.value = null;
   };
 
   return {
@@ -84,5 +87,7 @@ export const useAccountsStore = defineStore("accounts", () => {
     createAccount,
     isCreating: createReq.isLoading,
     createError: createReq.error,
+
+    selectedAccount,
   };
 });
