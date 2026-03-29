@@ -6,6 +6,7 @@ import { Button, Dialog, useToast } from "primevue";
 import FormAccount from "../forms/FormAccount.vue";
 import type { AccountSummary } from "@/types";
 import ConfirmModal from "../ui/ConfirmModal.vue";
+import NotFound from "../elements/NotFound.vue";
 
 const accountsStore = useAccountsStore();
 const { deleteAccount } = accountsStore;
@@ -59,13 +60,10 @@ const handleDelete = async () => {
       :loading="accountsStore.isCreating"
     />
 
-    <div
+    <NotFound
       v-if="accountsStore.accounts.length === 0"
-      class="italic text-center py-4 border border-gray-500 text-gray-400"
-    >
-      No accounts found. Create your first account to start tracking your
-      finances!
-    </div>
+      text="No accounts found. Create your first account to start tracking your finances!"
+    />
 
     <AccountCard
       v-else

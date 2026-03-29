@@ -13,9 +13,13 @@ const registerPasswordSchema = z
     "Password must contain at least one special character",
   );
 
-  
-
 const emailSchema = z.email("Invalid email address");
+
+const nameSchema = z
+  .string()
+  .min(1, "Name is required")
+  .max(40, "Name must be less than 40 characters")
+  .regex(/^[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ.,\- ]*$/, "Invalid characters in name");
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -38,16 +42,20 @@ export const registerSchema = z
   });
 
 export const accountSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Account name must be at least 2 characters long")
-    .max(40, "Account name must be less than 40 characters long"),
+  name: nameSchema,
 });
 
 export const categorySchema = z.object({
-  name: z
-    .string()
-    .min(2, "Category name must be at least 2 characters long")
-    .max(40, "Category name must be less than 40 characters long"),
+  name: nameSchema,
   is_global: z.boolean().optional(),
+});
+
+export const transactionSchema = z.object({
+  name: nameSchema,
+  amount: z.coerce
+    .number("Amount must be a number")
+    .positive("Amount must be greater than zero"),
+  category_id: z.number().positive("Category is required"),
+  type_id: z.number().positive("Type is required"),
+  date: z.date().optional(),
 });

@@ -14,6 +14,7 @@ import ConfirmModal from "../ui/ConfirmModal.vue";
 import { useCategoriesStore } from "@/store/categories";
 import FormCategory from "../forms/FormCategory.vue";
 import CategoryCard from "./elements/CategoryCard.vue";
+import NotFound from "../elements/NotFound.vue";
 
 const categoriesStore = useCategoriesStore();
 const { deleteCategory } = categoriesStore;
@@ -71,12 +72,10 @@ const handleDelete = async () => {
       <AccordionPanel value="0">
         <AccordionHeader class="bg-transparent! px-0!">Yours</AccordionHeader>
         <AccordionContent class="*:*:px-0! *:*:bg-transparent!">
-          <div
+          <NotFound
             v-if="categoriesStore.userCategories.length === 0"
-            class="italic text-center py-4 border border-gray-500 text-gray-400"
-          >
-            No categories found. Create your first category to improve your financial tracking!
-          </div>
+            text="No categories found. Create your first category to start organizing your transactions!"
+          />
           <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <CategoryCard
               v-for="category in categoriesStore.userCategories"

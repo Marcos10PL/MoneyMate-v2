@@ -3,6 +3,7 @@ import { GUEST_LINKS } from "@/const";
 import { logout } from "@/services/api";
 import { useAccountsStore } from "@/store/accounts";
 import { useCategoriesStore } from "@/store/categories";
+import { useTransactionTypesStore } from "@/store/transactionTypes";
 import { useUserStore } from "@/store/user";
 import { Button } from "primevue";
 import { ref } from "vue";
@@ -11,6 +12,7 @@ import { useRouter } from "vue-router";
 const userStore = useUserStore();
 const accountsStore = useAccountsStore();
 const categoriesStore = useCategoriesStore();
+const typesStore = useTransactionTypesStore();
 
 const router = useRouter();
 
@@ -25,9 +27,10 @@ async function handleLogout() {
     userStore.clearUser();
     accountsStore.clearAccounts();
     categoriesStore.clearCategories();
+    typesStore.clearTypes();
 
     router.push(GUEST_LINKS.SIGN_IN);
-    
+
     loading.value = false;
   }
 }

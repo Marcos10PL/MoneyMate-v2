@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TypeCollection;
+use App\Http\Resources\TypeResource;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,10 @@ class TypeController extends Controller
    */
   public function index()
   {
-    return new TypeCollection(Type::all());
+    return response()->json([
+      'message' => 'Types retrieved successfully',
+      'types' => Type::all()->map(TypeResource::make(...)),
+    ]);
   }
 
   /**

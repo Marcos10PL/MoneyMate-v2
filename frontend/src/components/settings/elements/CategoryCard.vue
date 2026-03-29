@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { AccountSummary, Category } from "@/types";
 import { Button } from "primevue";
-import ActionButtons from "./ActionButtons.vue";
-import CardLayout from "./CardLayout.vue";
+import ActionButtons from "../../elements/ActionButtons.vue";
+import CardLayout from "../../elements/CardLayout.vue";
 
 defineProps<{
   category: Category;

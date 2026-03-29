@@ -22,3 +22,15 @@ export const SETTINGS_TABS = {
   CATEGORIES: { label: "Categories", value: "categories" },
   ACCOUNTS: { label: "Accounts", value: "accounts" },
 } as const;
+
+export const SUMMARY_COLORS = {
+  INCOME: "text-green-500",
+  EXPENSE: "text-red-500",
+  BALANCE: "text-primary",
+} as const;
+
+export const SUMMARY_ICONS = {
+  INCOME: "pi pi-arrow-up",
+  EXPENSE: "pi pi-arrow-down",
+  BALANCE: APP_LINKS_ICONS.TRANSACTIONS,
+} as const;

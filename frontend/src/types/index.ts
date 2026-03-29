@@ -27,7 +27,7 @@ export type TransactionPayload = {
   type_id: number;
   category_id: number;
   account_id?: number | null;
-  date?: string;
+  date?: string | Date;
 };
 
 // ------ PARAMS TYPES --------
@@ -37,17 +37,21 @@ export type PaginationParams = {
   perPage?: number;
 };
 
-export type TransactionQueryParams = {
+export type SortBy = "asc" | "desc" | undefined;
+
+export type TransactionFilters = {
   categoryId?: number;
   typeId?: number;
   accountId?: number;
-  startDate?: string;
-  endDate?: string;
-  search?: string;
-  sortBy?: "asc" | "desc";
-  page?: number;
-  perPage?: number;
+  startDate?: Date;
+  endDate?: Date;
 };
+
+export type TransactionQueryParams = TransactionFilters &
+  PaginationParams & {
+    sortBy?: SortBy;
+    search?: string;
+  };
 
 // ------ DATA TYPES --------
 
@@ -66,10 +70,7 @@ export type Account = {
 export type AccountSummary = {
   id: number;
   name: string;
-  income_sum: number;
-  expense_sum: number;
-  balance: number;
-};
+} & Summary;
 
 export type Category = {
   id: number;
@@ -77,11 +78,21 @@ export type Category = {
   is_global: boolean;
 };
 
+export type TransactionType = {
+  id: number;
+  name: string;
+};
+
+export enum TransactionTypeEnum {
+  INCOME = "income",
+  EXPENSE = "expense",
+}
+
 export type Transaction = {
   id: number;
   name: string;
   amount: string;
-  type: string;
+  type: TransactionTypeEnum;
   category: string;
   account: string | null;
   account_id: number | null;
@@ -90,6 +101,11 @@ export type Transaction = {
 
 export type TransactionsData = {
   transactions: Transaction[];
+} & Summary;
+
+// ------ COMMON TYPES --------
+
+export type Summary = {
   income_sum: number;
   expense_sum: number;
   balance: number;
@@ -102,12 +118,12 @@ export type PaginationMeta = {
   total: number;
 };
 
+// ------- API RESPONSE TYPES --------
+
 export type TransactionsListResponse = {
   data: TransactionsData;
   meta: PaginationMeta;
 };
-
-// ------- API RESPONSE TYPES --------
 
 export type ApiErrorResponse = {
   message?: string;
@@ -117,16 +133,6 @@ export type ApiErrorResponse = {
 export type ApiResponse<T = undefined, K extends string = "data"> = {
   message: string;
 } & ([T] extends [undefined] ? {} : Record<K, T>);
-
-// export type LoginResponse = {
-//   message: string;
-//   user: AuthUser;
-// };
-
-// export type RegisterResponse = {
-//   message: string;
-//   user: AuthUser;
-// };
 
 // ---- OTHER TYPES ----
 

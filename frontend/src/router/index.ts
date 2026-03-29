@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { useAccountsStore } from "@/store/accounts";
 import { useCategoriesStore } from "@/store/categories";
+import { useTransactionTypesStore } from "@/store/transactionTypes";
 import { useInitStore } from "@/store/init";
 import { SETTINGS_TABS } from "@/const";
 
@@ -92,6 +93,7 @@ router.beforeEach(async to => {
   const userStore = useUserStore();
   const accountsStore = useAccountsStore();
   const categoriesStore = useCategoriesStore();
+  const typesStore = useTransactionTypesStore();
 
   if (!userStore.isSessionInitialized) {
     await userStore.initSession();
@@ -105,9 +107,10 @@ router.beforeEach(async to => {
     await Promise.all([
       accountsStore.fetchAccounts(),
       categoriesStore.fetchCategories(),
+      typesStore.fetchTypes(),
     ]);
   }
-
+  
   init.loading = false;
 
   const requiresAuth = Boolean(to.meta.requiresAuth);

@@ -107,7 +107,7 @@ class TransactionController extends Controller
         }),
       ],
       'account_id' => [
-        'nullable',
+        'required',
         Rule::exists('accounts', 'id')->where('user_id', $userId),
       ],
       'date' => 'nullable|date',
@@ -168,7 +168,7 @@ class TransactionController extends Controller
         }),
       ],
       'account_id' => [
-        'nullable',
+        'required',
         Rule::exists('accounts', 'id')->where('user_id', $userId),
       ],
       'date' => 'nullable|date',

@@ -13,6 +13,7 @@ import type {
   TransactionPayload,
   TransactionQueryParams,
   TransactionsListResponse,
+  TransactionType,
 } from "@/types";
 import { api, APP_BASE_URL } from "./conn";
 import axios from "axios";
@@ -127,6 +128,17 @@ export async function deleteAccount(id: number) {
     return data;
   } catch (error) {
     throw toApiError(error, "Unable to delete account");
+  }
+}
+
+// -------- TYPES --------
+export async function getTypes() {
+  try {
+    const { data } =
+      await api.get<ApiResponse<TransactionType[], "types">>("/types");
+    return data;
+  } catch (error) {
+    throw toApiError(error, "Unable to fetch transaction types");
   }
 }
 

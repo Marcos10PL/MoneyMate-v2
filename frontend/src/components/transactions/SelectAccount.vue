@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useAccountsStore } from "@/store/accounts";
-import { Popover } from "primevue"
+import { Popover } from "primevue";
 import { useTemplateRef } from "vue";
-import AccountCard from "../settings/elements/AccountCard.vue"
-import CardLayout from "../settings/elements/CardLayout.vue"
-import Container from "../ui/Container.vue"
+import AccountCard from "../settings/elements/AccountCard.vue";
+import CardLayout from "../elements/CardLayout.vue";
+import Container from "../ui/Container.vue";
 
 const accountStore = useAccountsStore();
 
