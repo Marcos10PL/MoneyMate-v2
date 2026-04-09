@@ -20,6 +20,7 @@ defineProps<{
       dateFormat="dd.mm.yy"
       iconDisplay="input"
       :showOnFocus="false"
+      :manualInput="false"
       class="w-full"
     />
     <Message

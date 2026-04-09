@@ -95,6 +95,7 @@ const activeFiltersCount = computed(() => {
             showClear
             iconDisplay="input"
             :dateFormat="'dd.mm.yy'"
+            :manualInput="false"
             :showOnFocus="false"
           />
 
@@ -106,6 +107,7 @@ const activeFiltersCount = computed(() => {
             showClear
             iconDisplay="input"
             :dateFormat="'dd.mm.yy'"
+            :manualInput="false"
             :showOnFocus="false"
           />
         </div>

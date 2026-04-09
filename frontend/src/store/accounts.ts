@@ -61,6 +61,14 @@ export const useAccountsStore = defineStore("accounts", () => {
     });
   }
 
+  async function refreshSelectedAccount() {
+    await fetchAccounts(true);
+    if (selectedAccount.value) {
+      const fresh = accounts.value.find(a => a.id === selectedAccount.value!.id);
+      if (fresh) selectedAccount.value = fresh;
+    }
+  }
+
   const clearAccounts = () => {
     accounts.value = [];
     isInitialLoaded.value = false;
@@ -89,5 +97,6 @@ export const useAccountsStore = defineStore("accounts", () => {
     createError: createReq.error,
 
     selectedAccount,
+    refreshSelectedAccount,
   };
 });

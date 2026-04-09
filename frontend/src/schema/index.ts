@@ -53,9 +53,11 @@ export const categorySchema = z.object({
 export const transactionSchema = z.object({
   name: nameSchema,
   amount: z.coerce
-    .number("Amount must be a number")
+    .number("Amount is required")
     .positive("Amount must be greater than zero"),
-  category_id: z.number().positive("Category is required"),
-  type_id: z.number().positive("Type is required"),
+  category_id: z
+    .number("Category is required")
+    .positive("Category is required"),
+  type_id: z.number("Type is required").positive("Type is required"),
   date: z.date().optional(),
 });

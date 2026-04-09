@@ -3,7 +3,7 @@ export const formatPrice = (price: number) => {
     style: "currency",
     currency: "PLN",
     currencyDisplay: "narrowSymbol",
-    currencySign: "accounting",
+    currencySign: "standard",
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
     useGrouping: true,

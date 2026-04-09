@@ -131,7 +131,10 @@ async function reset() {
   modal.value = false;
   deleteModal.value = false;
 
-  await fetchTransactions();
+  await Promise.all([
+    accountsStore.refreshSelectedAccount(),
+    fetchTransactions(),
+  ]);
 }
 
 const onPageChange = (event: { page: number }) => {
@@ -150,10 +153,10 @@ const resetFilters = async () => {
 
 // reset transactions when account changes
 watch(
-  [() => accountsStore.selectedAccount, filters, sortBy, search],
-  async ([account], [previousAccount]) => {
-    if (account) {
-      if (account.id !== previousAccount?.id) {
+  [() => accountsStore.selectedAccount?.id, filters, sortBy, search],
+  async ([accountId], [previousAccountId]) => {
+    if (accountId) {
+      if (accountId !== previousAccountId) {
         currentPage.value = 1;
       }
 
@@ -170,7 +173,12 @@ watch(
 </script>
 
 <template>
+  <div v-if="!accountsStore.selectedAccount" class="py-8">
+    <NotFound text="Please select an account to view transactions" />
+  </div>
+
   <div
+    v-else
     class="space-y-4 mt-4 border-t dark:border-zinc-700 border-zinc-200 pt-4"
   >
     <Filters @reset="resetFilters" v-model="filters" />

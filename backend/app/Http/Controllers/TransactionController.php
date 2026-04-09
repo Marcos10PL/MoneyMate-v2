@@ -58,12 +58,14 @@ class TransactionController extends Controller
       $transactionsQuery->where('account_id', $request->input('account_id'));
     }
 
-    $income = (float) $user->transactions()
+    $summaryQuery = clone $transactionsQuery;
+
+    $income = (float) (clone $summaryQuery)
       ->whereHas('type', fn($q) => $q
         ->where('name', 'income'))
       ->sum('amount');
 
-    $expense = (float) $user->transactions()
+    $expense = (float) (clone $summaryQuery)
       ->whereHas('type', fn($q) => $q
         ->where('name', 'expense'))
       ->sum('amount');
