@@ -258,6 +258,8 @@ watch(
         :totalRecords="meta.total"
         :first="(currentPage - 1) * PER_PAGE"
         @page="onPageChange"
+        template="PrevPageLink CurrentPageReport NextPageLink"
+        currentPageReportTemplate="{currentPage} / {totalPages}"
       />
     </template>
 
