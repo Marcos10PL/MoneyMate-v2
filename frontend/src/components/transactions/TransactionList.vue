@@ -259,7 +259,7 @@ watch(
         :first="(currentPage - 1) * PER_PAGE"
         @page="onPageChange"
         template="PrevPageLink CurrentPageReport NextPageLink"
-        currentPageReportTemplate="{first} / {last}"
+        currentPageReportTemplate="{currentPage} / {totalPages}"
       />
     </template>
 
