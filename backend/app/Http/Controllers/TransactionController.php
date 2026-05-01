@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TransactionCollection;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class TransactionController extends Controller
@@ -40,11 +38,16 @@ class TransactionController extends Controller
       $transactionsQuery->where('date', '<=', $endDate);
     }
 
-    if ($request->has('sort_by') && in_array($request->input('sort_by'), ['asc', 'desc'])) {
-      $transactionsQuery->orderBy('amount', $request->input('sort_by'));
-    } else if ($request->has('sort_by') && $request->input('sort_by') == 'asc') {
-      $transactionsQuery->orderBy('amount', 'asc');
-    }
+    $sortMap = [
+      'date_desc'   => ['date',   'desc'],
+      'date_asc'    => ['date',   'asc'],
+      'amount_desc' => ['amount', 'desc'],
+      'amount_asc'  => ['amount', 'asc'],
+    ];
+
+    [$sortField, $sortDirection] = $sortMap[$request->input('sort_by')] ?? ['date', 'desc'];
+
+    $transactionsQuery->orderBy($sortField, $sortDirection);
 
     if ($request->has('search') && $request->input('search') != '') {
       $transactionsQuery->where('name', 'like', '%' . $request->input('search') . '%');

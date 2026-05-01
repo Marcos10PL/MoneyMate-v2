@@ -1,6 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref } from "vue";
-import { Button, useToast } from "primevue";
+import { Button } from "primevue";
+import { useToast } from "@/composables/useToast";
 import type z from "zod";
 import { Form } from "@primevue/forms";
 import FormInputField from "../ui/FormInputField.vue";

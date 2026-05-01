@@ -39,6 +39,9 @@ app.use(PrimeVue, {
       darkModeSelector: ".my-app-dark",
     },
   },
+  toast: {
+    life: 3000,
+  },
 });
 
 app.directive("tooltip", Tooltip);

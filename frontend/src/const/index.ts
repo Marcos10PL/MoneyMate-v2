@@ -34,3 +34,5 @@ export const SUMMARY_ICONS = {
   EXPENSE: "pi pi-arrow-down",
   BALANCE: APP_LINKS_ICONS.TRANSACTIONS,
 } as const;
+
+export const DEFAULT_TOAST_LIFE_MS = 3000; // 3s

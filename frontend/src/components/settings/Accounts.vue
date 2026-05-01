@@ -1,8 +1,9 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { useAccountsStore } from "@/store/accounts";
 import AccountCard from "./elements/AccountCard.vue";
 import { ref } from "vue";
-import { Button, Dialog, useToast } from "primevue";
+import { Button, Dialog } from "primevue";
+import { useToast } from "@/composables/useToast";
 import FormAccount from "../forms/FormAccount.vue";
 import type { AccountSummary } from "@/types";
 import ConfirmModal from "../ui/ConfirmModal.vue";

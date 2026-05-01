@@ -37,7 +37,12 @@ export type PaginationParams = {
   perPage?: number;
 };
 
-export type SortBy = "asc" | "desc" | undefined;
+export type SortBy =
+  | "date_desc"
+  | "date_asc"
+  | "amount_desc"
+  | "amount_asc"
+  | undefined;
 
 export type TransactionFilters = {
   categoryId?: number;

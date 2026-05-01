@@ -7,8 +7,8 @@ import {
   AccordionPanel,
   Button,
   Dialog,
-  useToast,
 } from "primevue";
+import { useToast } from "@/composables/useToast";
 import type { Category } from "@/types";
 import ConfirmModal from "../ui/ConfirmModal.vue";
 import { useCategoriesStore } from "@/store/categories";
@@ -43,11 +43,21 @@ const handleDelete = async () => {
     });
 
     reset();
-  } catch {
-    toast.add({
-      severity: "error",
-      summary: "Failed to delete category",
-    });
+  } catch (e) {
+    const err = e as { status: number };
+
+    if (err.status === 422) {
+      toast.add({
+        severity: "error",
+        summary:
+          "This category is currently in use by one or more transactions. Please update those transactions to use a different category before deleting this one.",
+      });
+    } else {
+      toast.add({
+        severity: "error",
+        summary: "Failed to delete category",
+      });
+    }
   }
 };
 </script>

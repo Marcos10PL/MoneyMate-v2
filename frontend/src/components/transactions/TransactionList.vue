@@ -17,8 +17,8 @@ import {
   InputText,
   Paginator,
   Select,
-  useToast,
 } from "primevue";
+import { useToast } from "@/composables/useToast";
 import ConfirmModal from "../ui/ConfirmModal.vue";
 import FormTransaction from "../forms/FormTransaction.vue";
 import TransactionCard from "./TransactionCard.vue";
@@ -56,13 +56,14 @@ const getInitialFilters = () => {
 };
 
 const search = ref("");
-const sortBy = ref<SortBy>(undefined);
+const sortBy = ref<SortBy>("date_desc");
 const filters = reactive<TransactionFilters>(getInitialFilters());
 
 const sortOptions = [
-  { label: "Newest first", value: "desc" },
-  { label: "Oldest first", value: "asc" },
-  { label: "Default", value: undefined },
+  { label: "Newest", value: "date_desc" },
+  { label: "Oldest", value: "date_asc" },
+  { label: "Highest amount", value: "amount_desc" },
+  { label: "Lowest amount", value: "amount_asc" },
 ];
 
 // search
@@ -158,6 +159,7 @@ watch(
     if (accountId) {
       if (accountId !== previousAccountId) {
         currentPage.value = 1;
+        transactions.value = [];
       }
 
       await fetchTransactions(currentPage.value);
@@ -228,7 +230,7 @@ watch(
       />
     </div>
 
-    <div v-if="fetchReq.isLoading.value" class="flex justify-center py-8">
+    <div v-if="fetchReq.isLoading.value && transactions.length === 0" class="flex justify-center py-8">
       <i class="pi pi-spin pi-spinner text-2xl text-gray-400" />
     </div>
 
