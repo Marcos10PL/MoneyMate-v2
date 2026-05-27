@@ -10,7 +10,7 @@ import { Button } from 'primevue'
       variant="text"
       size="small"
       severity="info"
-      v-tooltip.bottom="'Edit category'"
+      v-tooltip.bottom="'Edit'"
       @click="$emit('edit')"
     />
     <Button
@@ -18,7 +18,7 @@ import { Button } from 'primevue'
       variant="text"
       size="small"
       severity="danger"
-      v-tooltip.bottom="'Delete category'"
+      v-tooltip.bottom="'Delete'"
       @click="$emit('delete')"
     />
   </div>

@@ -18,16 +18,19 @@ const router = createRouter({
         {
           path: "",
           name: "home",
+          meta: { title: "MoneyMate" },
           component: () => import("../views/HomeView.vue"),
         },
         {
           path: "sign-in",
           name: "sign-in",
+          meta: { title: "Sign In" },
           component: () => import("../views/SignInView.vue"),
         },
         {
           path: "sign-up",
           name: "sign-up",
+          meta: { title: "Sign Up" },
           component: () => import("../views/SignUpView.vue"),
         },
       ],
@@ -42,20 +45,23 @@ const router = createRouter({
         {
           path: "dashboard",
           name: "dashboard",
+          meta: { title: "Dashboard" },
           component: () => import("../views/DashboardView.vue"),
         },
         {
           path: "profile",
           name: "profile",
+          meta: { title: "Profile" },
           component: () => import("../views/ProfileView.vue"),
         },
         {
           path: "transactions",
           name: "transactions",
+          meta: { title: "Transactions" },
           component: () => import("../views/TransactionsView.vue"),
         },
         {
-          beforeEnter: (to, from, next) => {
+          beforeEnter: (to, _, next) => {
             const params = new URLSearchParams(
               to.query as Record<string, string>,
             );
@@ -75,6 +81,7 @@ const router = createRouter({
           },
           path: "settings",
           name: "settings",
+          meta: { title: "Settings" },
           component: () => import("../views/SettingsView.vue"),
         },
       ],
@@ -123,6 +130,9 @@ router.beforeEach(async to => {
   if (guestOnly && userStore.isAuthenticated()) {
     return { name: "dashboard" };
   }
+
+  const title = to.meta.title;
+  document.title = title ? `${title} | MoneyMate` : "MoneyMate";
 });
 
 export default router;
